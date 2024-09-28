@@ -1,4 +1,7 @@
-export const TYPES = [
+//https://www.sitepoint.com/javascript-private-class-fields/
+const APIKEY = '1b8be318d66b41ba87c7e47dd32db7a4';
+const APISTRING = 'https://api-v3.mbta.com/';
+const TYPES = [
   {
     'id': '0',
     'name': 'Light Rail'
@@ -20,3 +23,5 @@ export const TYPES = [
     'name': 'Ferry'
   }
   ];
+  
+  export { APIKEY, APISTRING, TYPES };
