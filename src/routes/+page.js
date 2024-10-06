@@ -1,6 +1,7 @@
 import { ApiConfig } from "$lib/js/classes.js"
 import { TYPES } from "$lib/js/constants.js"
 import "$lib/css/styles.stylus"
+export const prerender = true
 
 const types = TYPES;
   
