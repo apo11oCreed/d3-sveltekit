@@ -8,7 +8,7 @@ const types = TYPES;
 export function _buildData(){
     // Request and push routes of each rail to mbta in store
     let mbta = {
-        rails : []
+        rails:{}
     };
     
     types.forEach(type=>{
@@ -19,14 +19,7 @@ export function _buildData(){
       
       rail.apiRequest()
       .then(data=>{
-          
-          let rail={};
-          rail[type.id]={
-              'routes':data,
-              'name':type.name
-          }
-          
-          return mbta.rails.push(rail);
+          return mbta.rails[type.id] = {name:type.name,data:data};
       });
     });
     
