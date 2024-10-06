@@ -1,10 +1,11 @@
 <script>
     export let mbta;
+    
 </script>
 <form>
     <select name="railType" id="railType">
-        {#each Object.entries(mbta.routes) as [type]}
-    	<option value={type}>The rail type is {type}</option>
+        {#each Object.entries(mbta.rails) as [type]}
+        <option value={type}>The rail type is {type}</option>
     	{/each}
     </select>
 </form>
