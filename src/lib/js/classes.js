@@ -1,4 +1,3 @@
-/* global fetch */
 import { APIKEY, APISTRING } from "$lib/js/constants.js"
 
 export class ApiConfig {
