@@ -6,6 +6,8 @@
 	
 </script>
 <h1>Graph</h1>
-<Graph --bg-color="#f5f5f5" mbta={data} />
+<div class="controls">
+    <Graph --bg-color="#f5f5f5" mbta={data} />
+</div>
 <style lang="stylus">
 </style>
