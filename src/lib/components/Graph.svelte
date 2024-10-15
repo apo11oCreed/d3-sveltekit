@@ -1,12 +1,12 @@
-<script>
+<script lang='ts'>
     import RoutesForm from '$lib/components/RoutesForm.svelte';
-    export let mbta;
+    export let mbta: { rails: { [key: string]: { name: string } } };
     
-    let rail = '';
+    let rail: string = '';
     
-    /** @param {MouseEvent} event */
-    function railSelected(){
-        rail = event.target.value;
+    /** @param {Event} e */
+    function railSelected(e: Event){
+        rail = (e.target as HTMLInputElement).value;
     }
     
 </script>
@@ -18,7 +18,7 @@
     	{/each}
     </select>
 </form>
-<RoutesForm selected={rail} />
+<RoutesForm selected={rail} data={mbta} />
 <style lang="stylus">
 $base_font_size = 16
 $base_font_size_ems = unit($base_font_size / 16, em)
