@@ -1,4 +1,31 @@
-body
-    font-family Helvetica, Arial, sans-serif
-    h1
-        font-size 3rem
+@css {
+    @layer  base, utilities, components, theme;
+    }
+
+@layer base
+    body
+        color #333
+        font-family Helvetica, Arial, sans-serif
+        margin 0
+        padding 0
+        font-size 1rem
+        line-height 1.5
+        background-color #f4f4f4
+
+@layer theme
+    body
+        color #846060
+        
+h1
+    font-size 3rem
+
+form
+    font-size 1rem
+
+.controls
+    container-name controls
+    container-type inline-size
+
+@container controls (min-width: 48rem)
+    form
+        font-size 0.75rem
