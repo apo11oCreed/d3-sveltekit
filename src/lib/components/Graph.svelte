@@ -3,6 +3,7 @@
     export let mbta: { rails: { [key: string]: { name: string } } };
     
     let rail: string = '';
+    $: rail;
     
     /** @param {Event} e */
     function railSelected(e: Event){
