@@ -17,10 +17,7 @@
 </form>
 <RoutesForm selected={rail} data={mbta} />
 <style lang="stylus">
-$base_font_size = 16
-$base_font_size_ems = unit($base_font_size / 16, em)
-$px = unit(1 / $base_font_size, rem)
-$px_em = unit(1 / $base_font_size, em)
+@import '../css/vars-functions.styl'
     
 form
     border-radius 10 * $px
