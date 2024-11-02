@@ -1,5 +1,6 @@
 <script lang='ts'>
     import RoutesForm from '$lib/components/RoutesForm.svelte';
+    import Select from '$lib/components/Select.svelte';
     export let mbta: { rails: { [key: string]: { name: string } } };
     
     let rail: string = '';
@@ -12,12 +13,7 @@
     
 </script>
 <form>
-    <select name="railType" id="railType" on:change={railSelected} >
-        <option value="" disabled selected>-- Select Rail --</option>
-        {#each Object.entries(mbta.rails) as [railId,railObj]}
-        <option value={railId}>{railObj.name}</option>
-    	{/each}
-    </select>
+    <Select name="railType" id="railType" data="{mbta.rails}" changeFunction="{railSelected}" />
 </form>
 <RoutesForm selected={rail} data={mbta} />
 <style lang="stylus">
@@ -27,13 +23,9 @@ $px = unit(1 / $base_font_size, rem)
 $px_em = unit(1 / $base_font_size, em)
     
 form
-    border-radius 10px;
+    border-radius 10 * $px
     border none
     box-shadow 0 0 3px 0 rgba(0,0,0,0.25)
     padding 1rem
     background-color var(--bg-color)
-    select
-        font-size 1.5rem
-        padding 0.25rem
-        border-radius 5 * $px
 </style>
