@@ -1,5 +1,5 @@
-import { ApiConfig } from "$lib/js/classes.js"
-import { TYPES } from "$lib/js/constants.js"
+import { ApiConfig } from "$lib/js/classes.ts"
+import { TYPES } from "$lib/js/constants.ts"
 import "$lib/css/styles.styl"
 export const prerender = true
 
@@ -7,12 +7,12 @@ const types = TYPES;
   
 export function _buildData(){
     // Request and push routes of each rail to mbta in store
-    let mbta = {
-        rails:{}
+    const mbta = {
+        rails: {} as { [key: string]: { name: string, data: object } }
     };
     
     types.forEach(type=>{
-      let rail = new ApiConfig(type.id,'routes?filter[type]=');
+      const rail = new ApiConfig(type.id,'routes?filter[type]=');
       
       rail.requestId = type.id;
       rail.requestString = type.id;

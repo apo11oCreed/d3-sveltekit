@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
     import RoutesForm from '$lib/components/RoutesForm.svelte';
     import Select from '$lib/components/Select.svelte';
     export let mbta: { rails: { [key: string]: { name: string } } };
