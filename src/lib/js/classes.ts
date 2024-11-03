@@ -2,18 +2,18 @@ import { APIKEY, APISTRING } from "$lib/js/constants.js"
 
 export class ApiConfig {
   #key;
-  constructor(input,api){
+  constructor(index,api:string){
     this.#key = APIKEY;
     this.api = `${APISTRING}${api}`;
     this.request = '';
     this.id = '';
   }
-  set requestDate(input){
-    this.date = this.formatDate(input);
-  }
-  get requestDate(){
-    return this.data;
-  }
+  // set requestDate(input){
+  //   this.date = this.formatDate(input);
+  // }
+  // get requestDate(){
+  //   return this.data;
+  // }
   formatDate(date = new Date()){// If no date defined, set as new Date()
     return `${date.getFullYear()}-${('0' + (+(date.getMonth()) + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
   }
@@ -37,7 +37,7 @@ export class ApiConfig {
     
     return await fetch(this.request)
     .then(res=>{
-      let response = res.json();
+      const response = res.json();
       return response;
     })
     .then(response=>{

@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
     //https://sveltekit.io/blog/svelte-each-blocks
     //https://javascript.plainenglish.io/update-arrays-and-objects-in-svelte-40c6a84f8a28
-    import { TYPES } from "$lib/js/constants.js"
+    import { TYPES } from "$lib/js/constants.ts"
     export let selected;
     export let data;
     
+    let options: { index: string; id: string }[] = [];
     $: options=[];
     $: {
       if(selected != ''){
