@@ -1,8 +1,11 @@
 import { APIKEY, APISTRING } from "$lib/js/constants.js"
 
 export class ApiConfig {
-  #key;
-  constructor(index,api:string){
+  #key:string;
+  api:string;
+  request:string;
+  id:string;
+  constructor(index:string,api:string){
     this.#key = APIKEY;
     this.api = `${APISTRING}${api}`;
     this.request = '';
