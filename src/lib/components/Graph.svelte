@@ -1,21 +1,36 @@
 <script lang="ts">
     import RoutesForm from '$lib/components/RoutesForm.svelte';
     import Select from '$lib/components/Select.svelte';
-    export let mbta: { rails: { [key: string]: { name: string } } };
+    export let graphData;
     
-    let rail: string = '';
-    $: rail;
+    function optionsBuilder(data){
+        let options=[];
+        for(let item in data){
+            options.push({
+                index: item,
+                id: graphData.rails[item].name
+            });
+        }
+        return options;
+    }
     
-    /** @param {Event} e */
-    function railSelected(e: Event){
-        rail = (e.target as HTMLInputElement).value;
+    let selectedChildValueRails = '';
+    let selectedChildValueRoutes = '';
+    
+    let optionRail;
+    $: optionRail = selectedChildValueRails;
+    <!--If the rail selection has been changed, reset the route select-->
+    $: if (optionRail){
+        selectedChildValueRoutes = '';
     }
     
 </script>
 <form>
-    <Select name="railType" id="railType" data="{mbta.rails}" changeFunction="{railSelected}" />
+    <Select name="rail" id="rail" bind:selected={selectedChildValueRails} data={optionsBuilder(graphData.rails)} />
+    {#if optionRail}
+    <Select name="route" id="route" bind:selected={selectedChildValueRoutes} data={graphData.rails[optionRail].routes} />
+    {/if}
 </form>
-<RoutesForm selected={rail} data={mbta} />
 <style lang="stylus">
 @import '../css/vars-functions.styl'
     

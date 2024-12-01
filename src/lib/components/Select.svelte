@@ -1,13 +1,13 @@
 <script lang="ts">
     export let name: string;
     export let id: string;
-    export let data: { [key: string]: { name: string } };
-    export let changeFunction: (event: Event) => void; // this should already be iterable from parent component
+    export let data;
+    export let selected;
 </script>
-<select name="{name}" id="{id}" on:change={changeFunction}>
-    <option value="" disabled selected>-- Select Rail --</option>
-    {#each Object.entries(data) as [dataId,dataObj]}
-        <option value={dataId}>{dataObj.name}</option>
+<select name={name} id={id} bind:value={selected}>
+    <option value="" disabled selected>-- Select {name} --</option>
+    {#each Object.entries(data) as [dataId,dataObj], i}
+        <option value={dataId}>{dataObj.id}</option>
     {/each}
 </select>
 <style lang="stylus">
