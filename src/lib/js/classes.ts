@@ -1,4 +1,4 @@
-import { APIKEY, APISTRING } from "$lib/js/constants.js"
+import { APIKEY, APISTRING } from "$lib"
 
 export class ApiConfig {
   #key:string;

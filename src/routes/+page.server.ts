@@ -1,4 +1,4 @@
-import { _buildData } from './+page.ts'
+import { _buildData } from './+page'
 /** @type {import('./$types').PageServerLoad} */
 
 const buildData = _buildData();
