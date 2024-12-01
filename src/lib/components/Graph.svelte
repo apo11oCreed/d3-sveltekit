@@ -1,5 +1,4 @@
 <script lang="ts">
-    import RoutesForm from '$lib/components/RoutesForm.svelte';
     import Select from '$lib/components/Select.svelte';
     export let graphData;
     
@@ -19,7 +18,7 @@
     
     let optionRail;
     $: optionRail = selectedChildValueRails;
-    <!--If the rail selection has been changed, reset the route select-->
+    // If the rail selection has been changed, reset the route select
     $: if (optionRail){
         selectedChildValueRoutes = '';
     }
