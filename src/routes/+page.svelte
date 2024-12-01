@@ -7,7 +7,7 @@
 </script>
 <h1>Graph</h1>
 <div class="controls">
-    <Graph --bg-color="#f5f5f5" mbta={data} />
+    <Graph --bg-color="#f5f5f5" graphData={data} />
 </div>
 <style lang="stylus">
 </style>
