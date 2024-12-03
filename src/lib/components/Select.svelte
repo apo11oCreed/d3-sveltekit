@@ -1,8 +1,8 @@
 <script lang="ts">
     export let name: string;
     export let id: string;
-    export let data;
-    export let selected;
+    export let data: {index: string, id: string}[];
+    export let selected: string;
 </script>
 <select name={name} id={id} bind:value={selected}>
     <option value="" disabled selected>-- Select {name} --</option>
