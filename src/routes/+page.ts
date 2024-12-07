@@ -3,7 +3,7 @@ import "$lib/css/styles.styl"
 export const prerender = true
 
 const types = TYPES;
-  
+
 export function _buildData(){
     // Request and push routes of each rail to mbta in store
     const mbta = {
@@ -22,7 +22,8 @@ export function _buildData(){
         for(let item in data){
           let routeObj = {
             index: item,
-            id: data[item].id
+            id: data[item as keyof object].id
+            //https://stackoverflow.com/a/69198602
           }
           routeObjs.push(routeObj);
         }
