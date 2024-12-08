@@ -17,10 +17,20 @@
     let selectedChildValueRoutes = '';
     
     let optionRail;
+    let optionRoute;
     $: optionRail = selectedChildValueRails;
+    $: optionRoute = selectedChildValueRoutes;
     // If the rail selection has been changed, reset the route select
     $: if (optionRail){
         selectedChildValueRoutes = '';
+    }
+    // If the route selection has been changed, run the route data request
+    $: if (optionRoute){
+        const id=graphData.rails[optionRail].routes[optionRoute].id;
+        //console.log(`https://api-v3.mbta.com/trips?filter[route]=${id}&api_key=1b8be318d66b41ba87c7e47dd32db7a4`);
+        let response = fetch(`https://api-v3.mbta.com/trips?filter[route]=${id}&api_key=1b8be318d66b41ba87c7e47dd32db7a4`);
+        
+        console.log(`https://api-v3.mbta.com/trips?filter[route]=${id}&api_key=1b8be318d66b41ba87c7e47dd32db7a4`);
     }
     
 </script>
@@ -29,6 +39,9 @@
     {#if optionRail}
     <Select name="route" id="route" bind:selected={selectedChildValueRoutes} data={graphData.rails[optionRail].routes} />
     {/if}
+    <p>
+        {optionRoute}
+    </p>
 </form>
 <style lang="stylus">
 @import '../css/vars-functions.styl'

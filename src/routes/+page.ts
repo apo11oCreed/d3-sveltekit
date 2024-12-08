@@ -11,6 +11,7 @@ export function _buildData(){
     };
     
     types.forEach((type: object)=>{
+      
       const rail = new ApiConfig(type.id,'routes?filter[type]=');
       
       rail.requestId = type.id;
@@ -18,18 +19,30 @@ export function _buildData(){
       
       rail.apiRequest()
       .then((data: object)=>{
-        let routeObjs = [];
+        const routeObjs: {}[] = [];
         for(let item in data){
-          let routeObj = {
-            index: item,
-            id: data[item as keyof object].id
-            //https://stackoverflow.com/a/69198602
-          }
-          routeObjs.push(routeObj);
+          
+          const route = new ApiConfig(type.id,'trips?filter[route]=');
+          const routeObj = {};
+          let tripCount=0;
+          
+          route.requestId = data[item as keyof object].id;
+          route.requestString = data[item as keyof object].id;
+          
+          routeObj.id=data[item as keyof object].id;
+          //https://stackoverflow.com/a/69198602
+          
+          route.apiRequest()
+          .then((data: object)=>{
+            tripCount=data.length;
+          }).then(()=>{
+            routeObj.trips=tripCount;
+            routeObjs.push(routeObj);
+          });
         }
         return mbta.rails[type.id] = {
           name:type.name,
-          routes:routeObjs
+          routes: routeObjs
         };
       });
     });
