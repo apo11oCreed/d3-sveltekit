@@ -1,5 +1,6 @@
 <script lang="ts">
     import Select from '$lib/components/Select.svelte';
+    import * as d3 from 'd3';
     export let graphData;
     
     function optionsBuilder(data){
@@ -25,12 +26,45 @@
         selectedChildValueRoutes = '';
     }
     // If the route selection has been changed, run the route data request
-    $: if (optionRoute){
-        const id=graphData.rails[optionRail].routes[optionRoute].id;
-        //console.log(`https://api-v3.mbta.com/trips?filter[route]=${id}&api_key=1b8be318d66b41ba87c7e47dd32db7a4`);
-        let response = fetch(`https://api-v3.mbta.com/trips?filter[route]=${id}&api_key=1b8be318d66b41ba87c7e47dd32db7a4`);
+    $: if (optionRail){
+        //const id=graphData.rails[optionRail].routes[optionRoute].id;
+        //let response = fetch(`https://api-v3.mbta.com/trips?filter[route]=${id}&api_key=1b8be318d66b41ba87c7e47dd32db7a4`);
         
-        console.log(`https://api-v3.mbta.com/trips?filter[route]=${id}&api_key=1b8be318d66b41ba87c7e47dd32db7a4`);
+        //console.log(graphData.rails[optionRail].routes[optionRoute]);
+        const data = graphData.rails[optionRail].routes;
+        const width = 30;
+        const height = 30;
+        const bg = 'red';
+        //const test = d3.select('.test');
+        const svg = d3.create("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill",bg);
+        
+        const container=d3.select('.graph');
+        
+        const containerWidth = container.node().getBoundingClientRect().width;
+        
+        container.html("")
+        .selectAll('li')
+        .data(data)
+        .enter()
+        .append('li')
+        .append('span')
+        .attr('class','bars')
+        .html(d => `<span>${d.id} = ${d.trips} trips</span>`)
+        .style('display','block')
+        .style('background-color','lightblue')
+        .style('margin','5px')
+        .style('padding','10px')
+        .style('width',0)
+        .transition()
+        .duration(500)
+        .ease(d3.easeLinear)
+        .style('width', d => {
+            return `${(d.trips/containerWidth) * 10}%`;
+        });
+        
     }
     
 </script>
@@ -39,10 +73,8 @@
     {#if optionRail}
     <Select name="route" id="route" bind:selected={selectedChildValueRoutes} data={graphData.rails[optionRail].routes} />
     {/if}
-    <p>
-        {optionRoute}
-    </p>
 </form>
+<ul class="graph"></ul>
 <style lang="stylus">
 @import '../css/vars-functions.styl'
     
