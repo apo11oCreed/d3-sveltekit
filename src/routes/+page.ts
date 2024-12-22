@@ -19,8 +19,8 @@ export function _buildData(){
       
       rail.apiRequest()
       .then((data: object)=>{
-        const routeObjs: {}[] = [];
-        for(let item in data){
+        const routeObjs: [];
+        for(const item in data){
           
           const route = new ApiConfig(type.id,'trips?filter[route]=');
           const routeObj = {};

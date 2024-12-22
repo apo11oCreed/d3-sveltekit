@@ -3,7 +3,7 @@
     import * as d3 from 'd3';
     export let graphData;
     
-    function optionsBuilder(data){
+    function optionsBuilder(data: {index: string, id: string}[]){
         let options=[];
         for(let item in data){
             options.push({
