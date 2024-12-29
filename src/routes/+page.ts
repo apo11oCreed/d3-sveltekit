@@ -4,13 +4,29 @@ export const prerender = true
 
 const types = TYPES;
 
+interface RouteObjs extends Array<object> {}
+
+interface RouteObj {
+  id: string,
+  trips: number
+}
+
+interface Mbta {
+  rails: {
+    [key: string]: { 
+      name: string,
+      routes: object
+    }
+  }
+}
+
 export function _buildData(){
     // Request and push routes of each rail to mbta in store
-    const mbta = {
-        rails: {} as { [key: string]: { name: string, routes: object } }
+    const mbta: Mbta = {
+      rails: {}
     };
     
-    types.forEach((type: object)=>{
+    types.forEach((type: {id: string, name: string})=>{
       
       const rail = new ApiConfig(type.id,'routes?filter[type]=');
       
@@ -19,21 +35,27 @@ export function _buildData(){
       
       rail.apiRequest()
       .then((data: object)=>{
-        const routeObjs: [];
+        
+        const routeObjs: RouteObjs = [];
+        
         for(const item in data){
           
           const route = new ApiConfig(type.id,'trips?filter[route]=');
-          const routeObj = {};
-          let tripCount=0;
+          
+          let tripCount = 0;
           
           route.requestId = data[item as keyof object].id;
           route.requestString = data[item as keyof object].id;
           
-          routeObj.id=data[item as keyof object].id;
+          const routeObj: RouteObj = {
+            id: data[item as keyof object].id,
+            trips: tripCount
+          };
+          
           //https://stackoverflow.com/a/69198602
           
           route.apiRequest()
-          .then((data: object)=>{
+          .then((data: object)=>{// type safety skipped as only the length of trips objects is needed
             tripCount=data.length;
           }).then(()=>{
             routeObj.trips=tripCount;
@@ -41,7 +63,7 @@ export function _buildData(){
           });
         }
         return mbta.rails[type.id] = {
-          name:type.name,
+          name: type.name,
           routes: routeObjs
         };
       });
