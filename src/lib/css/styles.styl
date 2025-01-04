@@ -1,17 +1,4 @@
-@css {
-    @layer  base, utilities, components, theme;
-    }
-
-.graph
-    list-style-type none
-    padding-left 0
-    li
-        position relative
-        width 100%
-        span > span
-            position absolute
-            left 0
-            top 0
+@css { @layer  base, utilities, components, theme; }
 
 @layer base
     body
@@ -23,21 +10,19 @@
         line-height 1.5
         background-color #f4f4f4
         padding 1rem
+    h1
+        font-size 3rem
+
+    form
+        font-size 0.8rem
 
 @layer theme
     body
         color #846060
-        
-h1
-    font-size 3rem
-
-form
-    font-size 1rem
-
-.controls
-    container-name controls
-    container-type inline-size
+    .controls
+        container-name controls
+        container-type inline-size
 
 @container controls (min-width: 48rem)
     form
-        font-size 0.75rem
+        font-size 1rem
