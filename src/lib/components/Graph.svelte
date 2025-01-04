@@ -16,11 +16,10 @@
     return options;
   }
 
-  let selectedChildValueRails = '';
-  let selectedChildValueRoutes = '';
-
-  let optionRail;
-  let optionRoute;
+  let selectedChildValueRails = '',
+  selectedChildValueRoutes = '',
+  optionRail,
+  optionRoute;
 
   $: optionRail = selectedChildValueRails;
   $: optionRoute = selectedChildValueRoutes;
@@ -31,23 +30,21 @@
   // If the route selection has been changed, run the route data request
   $: if (optionRail) {
 
-    const data = graphData.rails[optionRail].routes;
-
-    const container = d3.select('#graphContainer');
-
-    const containerWidth = container.node().getBoundingClientRect().width;
+    const data = graphData.rails[optionRail].routes,
+    container = d3.select('#graphContainer'),
+    containerWidth = container.node().getBoundingClientRect().width;
 
     d3
       .select("#graphContainer")
       .select("svg")
       .remove();
 
-    const svg2 = d3
+    const svg = d3
       .select("#graphContainer")
       .append("svg")
       .attr('width', '100%');
 
-    const g = svg2
+    const g = svg
       .selectAll("g")
       .data(data)
       .enter()
@@ -69,8 +66,8 @@
       .style('width', d => {
         return `${(d.trips/containerWidth) * 10}%`;
       });
-
-    svg2
+      
+    svg
       .attr('height', function() {
         const rects = d3.selectAll('svg g');
         return rects._groups[0].length * 40;
@@ -82,18 +79,18 @@
       })
       .attr('x', '0')
       .attr('y', function(d) {
-        console.log(d.rectheight + 15);
         return d.rectheight + 15;
       });
   }
 </script>
 <form>
+  <legend>Comparison of quantity of daily trips between route types</legend>
   <Select name="rail" id="rail" bind:selected={selectedChildValueRails} data={optionsBuilder(graphData.rails)} />
   {#if optionRail}
-    <Select name="route" id="route" bind:selected={selectedChildValueRoutes} data={graphData.rails[optionRail].routes} />
-    {/if}
+  <Select name="route" id="route" bind:selected={selectedChildValueRoutes} data={graphData.rails[optionRail].routes} />
+  {/if}
 </form>
-<div id="graphContainer"><ul class="graph"></ul></div>
+<div id="graphContainer"></div>
 <style lang="stylus">
 @import '../css/vars-functions.styl'
     
