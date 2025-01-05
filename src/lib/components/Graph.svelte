@@ -1,5 +1,6 @@
 <script lang="ts">
   import Select from '$lib/components/Select.svelte';
+  import { SUBWAYCOLORS } from '$lib/js/constants';
   import * as d3 from 'd3';
   export let graphData;
 
@@ -59,7 +60,30 @@
         return i * 40;
 
       })
-      .attr("fill", "red")
+      .attr("fill", d => {
+        let color;
+        switch(optionRail){
+          case '0':
+            color = getSubwayColor(d.id);
+          break;
+          case '1':
+            color = getSubwayColor(d.id);
+          break;
+          case '2':
+            color = '#80276c';
+          break;
+          case '3':
+            color = '#ffc72c';
+          break;
+          case '4':
+            color = '#008eaa';
+          break;
+          default:
+            color = '#494f5c';
+          break;
+        }
+        return color;
+      })
       .transition()
       .duration(500)
       .ease(d3.easeLinear)
@@ -82,25 +106,37 @@
         return d.rectheight + 15;
       });
   }
+  
+  function getSubwayColor(id){
+    for(const route in SUBWAYCOLORS){
+      console.log(SUBWAYCOLORS[route]);
+      if(Object.keys(SUBWAYCOLORS[route])[0] == id){
+        return Object.values(SUBWAYCOLORS[route])[0];
+      }
+    }
+  }
 </script>
 <form>
-  <legend>Comparison of quantity of daily trips between route types</legend>
+  <legend><h2>Chart settings</h2></legend>
   <Select name="rail" id="rail" bind:selected={selectedChildValueRails} data={optionsBuilder(graphData.rails)} />
   {#if optionRail}
   <Select name="route" id="route" bind:selected={selectedChildValueRoutes} data={graphData.rails[optionRail].routes} />
   {/if}
 </form>
-<div id="graphContainer"></div>
+<figure id="graphContainer"></figure>
 <style lang="stylus">
 @import '../css/vars-functions.styl'
     
 form
-    border-radius 10 * $px
-    border none
-    box-shadow 0 0 3px 0 rgba(0,0,0,0.25)
     padding 1rem
     background-color var(--bg-color)
-g > text 
-    dominant-baseline text-before-edge
-    text-anchor middle
+    box-shadow 0 0 2px 0 inset rgba(0,0,0,0.25)
+  h2
+    line-height 1
+    margin-top 0
+    margin-bottom 1rem
+figure
+  margin 0
+  padding 1rem
+  
 </style>

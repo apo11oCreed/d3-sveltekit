@@ -49,9 +49,13 @@ export class ApiConfig implements Config {
       const response = res.json();
       return response;
     })
+    .catch(error=>{
+      console.log('THIS IS THE ERROR');
+      alert(error);
+    })
     .then(res=>{
       return res.data;
-    });
+    })
     
   };
 }

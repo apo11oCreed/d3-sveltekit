@@ -22,6 +22,17 @@ const TYPES = [
     'id': '4',
     'name': 'Ferry'
   }
-  ];
+];
   
-  export { APIKEY, APISTRING, TYPES };
+const SUBWAYCOLORS = [
+{'Mattapan': '#da291c'},
+{'Green-C': '#00843d'},
+{'Green-D': '#00843d'},
+{'Green-B': '#00843d'},
+{'Green-E': '#00843d'},
+{'Orange': '#ed8b00'},
+{'Blue': '#003da5'},
+{'Red': '#da291c'}
+];
+  
+export { APIKEY, APISTRING, TYPES, SUBWAYCOLORS };
