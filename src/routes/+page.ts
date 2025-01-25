@@ -28,7 +28,7 @@ export function _buildData(){
     
     types.forEach((type: {id: string, name: string})=>{
       
-      const rail = new ApiConfig(type.id,'routes?filter[type]=');
+      const rail = new ApiConfig('routes?filter[type]=');
       
       rail.requestId = type.id;
       rail.requestString = type.id;
@@ -40,7 +40,7 @@ export function _buildData(){
         
         for(const item in data){
           
-          const route = new ApiConfig(type.id,'trips?filter[route]=');
+          const route = new ApiConfig('trips?filter[route]=');
           
           let tripCount = 0;
           

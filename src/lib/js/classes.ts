@@ -12,7 +12,7 @@ export class ApiConfig implements Config {
   api: string;
   request: string;
   id: string;
-  constructor(index:string,api:string){
+  constructor(api:string){
     this._key = APIKEY;
     this.api = `${APISTRING}${api}`;
     this.request = '';
