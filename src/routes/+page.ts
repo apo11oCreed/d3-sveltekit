@@ -14,18 +14,18 @@ interface RouteObj {
 interface Mbta {
   rails: {
     [key: string]: { 
-      name: string,
+      id: string,
       routes: object
     }
   }
 }
 
 export function _buildData(){
-    // Request and push routes of each rail to mbta in store
-    const mbta: Mbta = {
+    // Initialize mbta data object
+    const mbta: Mbta = {  
       rails: {}
     };
-    
+    // make a data request for each rail in types array
     types.forEach((type: {id: string, name: string})=>{
       
       const rail = new ApiConfig('routes?filter[type]=');
@@ -56,14 +56,18 @@ export function _buildData(){
           
           route.apiRequest()
           .then((data: object)=>{// type safety skipped as only the length of trips objects is needed
+          
             tripCount=data.length;
+            
           }).then(()=>{
+            
             routeObj.trips=tripCount;
             routeObjs.push(routeObj);
+            
           });
         }
         return mbta.rails[type.id] = {
-          name: type.name,
+          id: type.name,
           routes: routeObjs
         };
       });
