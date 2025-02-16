@@ -9,7 +9,7 @@
   barWidth,
   graphContainerStyles; // INIT VAR TO HOLD WIDTH OF PARENT SVG. BARS' WIDTH SHOULD CHANGE BASED ON THIS EVERY TIME THE WINDOW RESIZES.
 
-  // BUILD DATA TO RENDER OPTIONS
+  // BUILD DATA TO RAIL OPTIONS
   function forRailOptions(data: { index: string, id: string } []) {
     let options = [];
     for (const item in data) {
@@ -24,11 +24,10 @@
   let selectedRail,
   selectedRoute;
   
+  // signals
   $: graphContainerWidth;
-  
   $: optionRail = selectedRail;
   $: optionRoute = selectedRoute;
-  
   
   // If the rail selection has been changed, reset the route select
   $: if (optionRail) {
@@ -51,25 +50,27 @@
     graphContainerWidth = graphContainer.node().offsetWidth;
     graphContainerStyles = window.getComputedStyle(graphContainer.node());
     
-    const margin = {top: 70, right: 40, bottom: 60, left: 175};
+    const margin = {top: 16, right: 75, bottom: 32, left: 125};
     const width = (graphContainerWidth - (parseInt(graphContainerStyles.getPropertyValue('padding-left')) * 2)) - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
-    
-    graphContainer.attr('style','border: 2px solid red');
+    const barHeight = 30;
+    const barSpacing = 5;
+    const chartHeight = (data.length * (barHeight + barSpacing)) - margin.top - margin.bottom;
     
     // add new svg
     const svg = d3
       .select('#graphContainer')
       .append('svg')
       .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
+      .attr('height', chartHeight + margin.top + margin.bottom)
       .append('g')
+      .attr('fill','#b3b3b3')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     
     data.sort(function (a,b) {
       return d3.descending(a.id, b.trips);
     });
     
+    // setup x axis scale
     const x = d3.scaleLinear()
       .range([0, width])
       .domain([0, d3.max(data,function(d){
@@ -77,30 +78,36 @@
       })])
       .nice();
       
+    // setup y axis scale
     const y = d3.scaleBand()
-      .range([height, 0])
+      .range([chartHeight, 0])
       .padding(0.1)
+      .paddingInner(0.5)
       .domain(data.map(function (d) {
         return d.id;
       }));
-      
+    
+    // setup orientation of ticks on the y and x axis
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
 
+    // create the groups, setup the position and assign props
     svg
       .append("g")
       .attr('class','x axis')
-      .attr('transform','translate(0, ' + height + ')')
-      // .attr("x1", "100%")
+      .attr('transform','translate(0, ' + chartHeight + ')')
       .call(xAxis);
       
     svg
       .append("g")
+      .attr('class','y axis')
       .call(yAxis);
-      
+    
+    // create the bars and assign bar props
     svg.selectAll('.bar')
     .data(data)
-    .enter().append('rect')
+    .enter()
+    .append('rect')
     .attr('class','bar')
     .attr('y', function(d) {
       return y(d.id);
@@ -145,9 +152,10 @@
     }
   }
   
-  //https://www.youtube.com/watch?v=sTOHoueLVJE
   
-  function logThis(){
+  //https://www.youtube.com/watch?v=sTOHoueLVJE
+  // function to update the bar widths triggered everytime the window is resized
+  function updateBarWidths(){
     graphContainerWidth = graphContainer.node().offsetWidth;
   }
 </script>
@@ -158,8 +166,9 @@
   <Select name="route" id="route" bind:selected={selectedRoute} data={graphData.rails[optionRail].routes} />
   {/if}
 </form>
-<svelte:window on:resize={logThis} />
+<svelte:window on:resize={updateBarWidths} />
 <figure id="graphContainer"></figure>
+
 <style lang="stylus">
 @import '../css/vars-functions.styl'
     
