@@ -2,39 +2,17 @@
   import Select from '$lib/components/Select.svelte';
   import { SUBWAYCOLORS } from '$lib/js/constants';
   import * as d3 from 'd3';
-  export let graphData;
-
+  export let dataInput;
+  export let optionRailInput;
+  
   let graphContainer, // INIT VAR TO HOLD THE GRAPH CONTAINER
   graphContainerWidth, // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
   barWidth,
-  graphContainerStyles; // INIT VAR TO HOLD WIDTH OF PARENT SVG. BARS' WIDTH SHOULD CHANGE BASED ON THIS EVERY TIME THE WINDOW RESIZES.
-
-  // BUILD DATA TO RAIL OPTIONS
-  function forRailOptions(data: { index: string, id: string } []) {
-    let options = [];
-    for (const item in data) {
-      options.push({
-        id: graphData.rails[item].id,
-        index: item
-      });
-    }
-    return options;
-  }
-
-  let selectedRail,
-  selectedRoute;
+  graphContainerStyles; 
   
-  // signals
-  $: graphContainerWidth;
-  $: optionRail = selectedRail;
-  $: optionRoute = selectedRoute;
   
-  // If the rail selection has been changed, reset the route select
-  $: if (optionRail) {
-    selectedRoute = '';
-  }
   // If the route selection has been changed, run the route data request
-  $: if (optionRail) {
+  $: if (optionRailInput) {
     
     // remove existing svg
     d3
@@ -43,7 +21,7 @@
       .remove();
 
     // get routes data of selected rail
-    const data = graphData.rails[optionRail].routes;
+    const data = dataInput.rails[optionRailInput].routes;
     
     // get the target container
     graphContainer = d3.select('#graphContainer');
@@ -119,7 +97,7 @@
     })
     .attr("fill", d => {
       let color;
-      switch(optionRail){
+      switch(optionRailInput){
         case '0':
           color = getSubwayColor(d.id);
         break;
@@ -159,29 +137,12 @@
     graphContainerWidth = graphContainer.node().offsetWidth;
   }
 </script>
-<form>
-  <legend><h2>Chart settings</h2></legend>
-  <Select name="rail" id="rail" bind:selected={selectedRail} data={forRailOptions(graphData.rails)} />
-  {#if optionRail}
-  <Select name="route" id="route" bind:selected={selectedRoute} data={graphData.rails[optionRail].routes} />
-  {/if}
-</form>
+
 <svelte:window on:resize={updateBarWidths} />
 <figure id="graphContainer"></figure>
 
 <style lang="stylus">
-@import '../css/vars-functions.styl'
-    
-form
-    padding 1rem
-    background-color var(--bg-color)
-    box-shadow 0 0 2px 0 inset rgba(0,0,0,0.25)
-  h2
-    line-height 1
-    margin-top 0
-    margin-bottom 1rem
 figure
   margin 0
   padding 1rem
-  
 </style>
