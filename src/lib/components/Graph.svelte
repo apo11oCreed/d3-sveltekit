@@ -7,7 +7,6 @@
   
   let graphContainer, // INIT VAR TO HOLD THE GRAPH CONTAINER
   graphContainerWidth, // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
-  barWidth,
   graphContainerStyles; 
   
   
