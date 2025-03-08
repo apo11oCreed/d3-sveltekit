@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { getContext } from 'svelte';
     export let name: string;
     export let id: string;
     export let data: {index: string, id: string}[];
