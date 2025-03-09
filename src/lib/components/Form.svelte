@@ -1,15 +1,11 @@
 <script lang="ts">
   import Select from '$lib/components/Select.svelte';
   import Graph from '$lib/components/Graph.svelte';
-  import { setContext } from 'svelte';
+  import { setContext, getContext } from 'svelte';
   let {graphData} = $props();
-  
-  //https://svelte.dev/docs/svelte/$derived
-  //https://svelte.dev/docs/svelte/$effect
   
   // BUILD DATA TO RAIL OPTIONS
   function forRailOptions(data: { index: string, id: string } []) {
-    console.log(data);
     let options = [];
     for (const item in data) {
       options.push({
@@ -19,23 +15,26 @@
     }
     return options;
   }
-  
-  let selectedRail = $state('');
-  let selectedRoute = $state('');
-  
-  let optionRail = $state(selectedRail);
-  let optionRoute = $state(selectedRoute);
+
+  let selectedRail = $state(),
+  selectedRoute = $state(),
+  optionRail = $state(),
+  optionRoute = $state();
   
   $effect(()=>{
     
-    if(optionRail){
+    if(selectedRail!==optionRail){
+      optionRail = selectedRail;
       setContext('optionRail',optionRail);
       selectedRoute = '';
     }
+    
+    optionRoute = selectedRoute;
+    
   });
   
-  let context = $state(optionRail);
-  setContext('optionRail', optionRail);
+  //let context = $state(optionRail);
+  //setContext('optionRail', optionRail);
                                               
 </script>
 
@@ -43,7 +42,7 @@
   <legend><h2>Chart settings</h2></legend>
   <Select name="rail" id="rail" bind:selected={selectedRail} data={forRailOptions(graphData.rails)} />
   {#if optionRail}
-  <Select name="route" id="route" bind:selected={selectedRoute} data={graphData.rails[optionRail].routes} />
+    <Select name="route" id="route" bind:selected={selectedRoute} data={graphData.rails[optionRail].routes} />
   {/if}
 </form>
 
