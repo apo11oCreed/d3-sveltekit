@@ -4,7 +4,7 @@ export const prerender = true
 
 const types = TYPES;
 
-interface RouteObjs extends Array<object> {}
+type RouteObjs = Array<RouteObj>;
 
 interface RouteObj {
   id: string,
