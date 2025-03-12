@@ -4,8 +4,10 @@
   import * as d3 from 'd3';
   export let dataInput;
   export let optionRailInput;
+
+  type RouteData = { id: string; trips: number };
   
-  let graphContainer, // INIT VAR TO HOLD THE GRAPH CONTAINER
+  let graphContainer: HTMLElement | null = null, // INIT VAR TO HOLD THE GRAPH CONTAINER
   graphContainerWidth, // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
   graphContainerStyles; 
   
@@ -23,9 +25,9 @@
     const data = dataInput.rails[optionRailInput].routes;
     
     // get the target container
-    graphContainer = d3.select('#graphContainer');
-    graphContainerWidth = graphContainer.node().offsetWidth;
-    graphContainerStyles = window.getComputedStyle(graphContainer.node());
+    graphContainer = d3.select('#graphContainer').node() as HTMLElement;
+    graphContainerWidth = graphContainer.offsetWidth;
+    graphContainerStyles = window.getComputedStyle(graphContainer);
     
     const margin = {top: 16, right: 75, bottom: 32, left: 125};
     const width = (graphContainerWidth - (parseInt(graphContainerStyles.getPropertyValue('padding-left')) * 2)) - margin.left - margin.right;
@@ -43,16 +45,16 @@
       .attr('fill','#b3b3b3')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     
-    data.sort(function (a,b) {
-      return d3.descending(a.id, b.trips);
+    data.sort(function (a: { id: string, trips: number }, b: { id: string, trips: number }) {
+      return d3.descending(a.trips, b.trips);
     });
     
     // setup x axis scale
     const x = d3.scaleLinear()
       .range([0, width])
-      .domain([0, d3.max(data,function(d){
+      .domain([0, d3.max(data,function(d: {id:string, trips:number}){
         return d.trips;
-      })])
+      }) || 0])
       .nice();
       
     // setup y axis scale
@@ -60,7 +62,7 @@
       .range([chartHeight, 0])
       .padding(0.1)
       .paddingInner(0.5)
-      .domain(data.map(function (d) {
+      .domain(data.map(function (d:{id:string, trips:number}) {
         return d.id;
       }));
     
@@ -82,16 +84,18 @@
     
     // create the bars and assign bar props
     svg.selectAll('.bar')
-    .data(data)
+    .data(data as RouteData[])
     .enter()
     .append('rect')
     .attr('class','bar')
-    .attr('y', function(d) {
-      return y(d.id);
+    .attr('y', (d: RouteData) =>{
+      const yValue = y(d.id);
+      // This ensures that the y attribute is always set to a valid number, preventing potential issues if the y scale function returns undefined
+      return yValue !== undefined ? yValue : 0;
     })
     .attr('height', y.bandwidth())
     .attr('x', 0)
-    .attr('width', function(d) {
+    .attr('width', (d: RouteData) =>{
       return x(d.trips);
     })
     .attr("fill", d => {
@@ -121,7 +125,7 @@
     
   }
   
-  function getSubwayColor(id){
+  function getSubwayColor(id: string){
     for(const route in SUBWAYCOLORS){
       if(Object.keys(SUBWAYCOLORS[route])[0] == id){
         return Object.values(SUBWAYCOLORS[route])[0];
@@ -133,7 +137,8 @@
   //https://www.youtube.com/watch?v=sTOHoueLVJE
   // function to update the bar widths triggered everytime the window is resized
   function updateBarWidths(){
-    graphContainerWidth = graphContainer.node().offsetWidth;
+    const graphContainer = document.getElementById('graphContainer');
+    graphContainerWidth = graphContainer?.offsetWidth ?? 0;
   }
 </script>
 

@@ -16,10 +16,10 @@
     return options;
   }
 
-  let selectedRail = $state(),
-  selectedRoute = $state(),
-  optionRail = $state(),
-  optionRoute = $state();
+  let selectedRail = $state<string>(''),
+  selectedRoute = $state<string>(''),
+  optionRail = $state<string>(''),
+  optionRoute = $state<string>('');
   
   $effect(()=>{
     
