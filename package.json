@@ -11,7 +11,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "deploy": "vite build && git add dist && git commit -m 'Deploy to GitHub Pages' && git push origin `git subtree split --prefix build main`:gh-pages --force"
+    "deploy": "vite build && git add build && git commit -m 'Deploy to GitHub Pages' && git push origin `git subtree split --prefix build main`:gh-pages --force"
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
