@@ -6,8 +6,8 @@
 
   type RouteData = { id: string; trips: number };
   
-  let graphContainer: HTMLElement | null = null, // INIT VAR TO HOLD THE GRAPH CONTAINER
-  graphContainerWidth, // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
+  let graphContainer, // INIT VAR TO HOLD THE GRAPH CONTAINER
+  graphContainerWidth = $state<string>(''), // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
   graphContainerStyles; 
   
   
