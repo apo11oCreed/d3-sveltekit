@@ -1,8 +1,23 @@
 <script lang="ts">
   import Select from '$lib/components/Select.svelte';
-  import Graph from '$lib/components/Graph.svelte';
   import { setContext, getContext } from 'svelte';
-  let {graphData} = $props();
+  const graphData = getContext('data');
+
+  let selectedRail = $state<string>(''),
+  selectedRoute = $state<string>(''),
+  optionRail = $state<string>(''),
+  optionRoute = $state<string>('');
+  
+  $effect(()=>{
+    
+    if(selectedRail!==optionRail){
+      optionRail = selectedRail;
+      selectedRoute = '';
+    }
+    
+    optionRoute = selectedRoute;
+    
+  });
   
   // BUILD DATA TO RAIL OPTIONS
   function forRailOptions(data: { index: string, id: string } []) {
@@ -15,26 +30,6 @@
     }
     return options;
   }
-
-  let selectedRail = $state<string>(''),
-  selectedRoute = $state<string>(''),
-  optionRail = $state<string>(''),
-  optionRoute = $state<string>('');
-  
-  $effect(()=>{
-    
-    if(selectedRail!==optionRail){
-      optionRail = selectedRail;
-      setContext('optionRail',optionRail);
-      selectedRoute = '';
-    }
-    
-    optionRoute = selectedRoute;
-    
-  });
-  
-  //let context = $state(optionRail);
-  //setContext('optionRail', optionRail);
                                               
 </script>
 
@@ -45,8 +40,6 @@
     <Select name="route" id="route" bind:selected={selectedRoute} data={graphData.rails[optionRail].routes} />
   {/if}
 </form>
-
-<Graph --bg-color="#f5f5f5" dataInput={graphData} optionRailInput={optionRail} />
 
 <style lang="stylus">
 @import '../css/vars-functions.styl'
