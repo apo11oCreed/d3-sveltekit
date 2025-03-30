@@ -1,18 +1,23 @@
 <script lang="ts">
   import Select from '$lib/components/Select.svelte';
   import { SUBWAYCOLORS } from '$lib/js/constants';
+  import { getContext } from 'svelte';
   import * as d3 from 'd3';
-  let {dataInput,optionRailInput} = $props();
+  import { railState } from '$lib/js/state.svelte.js';
+  
+  const dataInput = getContext('data');
 
   type RouteData = { id: string; trips: number };
   
   let graphContainer, // INIT VAR TO HOLD THE GRAPH CONTAINER
   graphContainerWidth = $state<string>(''), // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
-  graphContainerStyles; 
+  graphContainerStyles;
   
   
   // If the route selection has been changed, run the route data request
-  $effect(()=>{ if (optionRailInput) {
+  $effect(()=>{
+    
+    if (railState.option!='') {
       
       // remove existing svg
       d3
@@ -21,7 +26,7 @@
         .remove();
   
       // get routes data of selected rail
-      const data = dataInput.rails[optionRailInput].routes;
+      const data = dataInput.rails[railState.option].routes;
       
       // get the target container
       graphContainer = d3.select('#graphContainer').node() as HTMLElement;
@@ -100,7 +105,7 @@
       })
       .attr("fill", d => {
         let color;
-        switch(optionRailInput){
+        switch(railState.option){
           case '0':
             color = getSubwayColor(d.id);
           break;

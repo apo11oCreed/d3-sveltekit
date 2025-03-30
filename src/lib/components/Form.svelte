@@ -2,20 +2,17 @@
   import Select from '$lib/components/Select.svelte';
   import { setContext, getContext } from 'svelte';
   const graphData = getContext('data');
+  import { railState } from '$lib/js/state.svelte.js';
 
   let selectedRail = $state<string>(''),
   selectedRoute = $state<string>(''),
-  optionRail = $state<string>(''),
   optionRoute = $state<string>('');
   
   $effect(()=>{
     
-    if(selectedRail!==optionRail){
-      optionRail = selectedRail;
+    if(selectedRail!==railState.option){
       selectedRoute = '';
     }
-    
-    optionRoute = selectedRoute;
     
   });
   
@@ -35,10 +32,10 @@
 
 <form>
   <legend><h2>Chart settings</h2></legend>
-  <Select name="rail" id="rail" bind:selected={selectedRail} data={forRailOptions(graphData.rails)} />
-  {#if optionRail}
-    <Select name="route" id="route" bind:selected={selectedRoute} data={graphData.rails[optionRail].routes} />
-  {/if}
+  <Select name="rail" id="rail" bind:selected={railState.option} data={forRailOptions(graphData.rails)} />
+  <!--{#if railState.option}-->
+  <!--  <Select name="route" id="route" bind:selected={selectedRoute} data={graphData.rails[railState.option].routes} />-->
+  <!--{/if}-->
 </form>
 
 <style lang="stylus">
