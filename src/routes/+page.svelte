@@ -15,7 +15,7 @@
     </section>
     <section class="form">
         <Form --bg-color="#f5f5f5" />
-        <Graph --bg-color="#f5f5f5" />
+        <Graph />
     </section>
 </main>
 
