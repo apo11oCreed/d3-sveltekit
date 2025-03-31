@@ -5,12 +5,20 @@
   import * as d3 from 'd3';
   import { railState } from '$lib/js/state.svelte.js';
   
-  const dataInput = getContext('data');
+  interface RailData {
+    rails: {
+      [key: string]: {
+        routes: Array<{ id: string; trips: number }>;
+      };
+    };
+  }
+
+  const dataInput = getContext<RailData>('data');
 
   type RouteData = { id: string; trips: number };
   
   let graphContainer, // INIT VAR TO HOLD THE GRAPH CONTAINER
-  graphContainerWidth = $state<string>(''), // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
+  graphContainerWidth = $state<number>(0), // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
   graphContainerStyles;
   
   
@@ -57,7 +65,6 @@
       const x = d3.scaleLinear()
         .range([0, width])
         .domain([0, d3.max(data,function(d: {id:string, trips:number}){
-          console.log(d);
           return d.trips;
         }) || 0])
         .nice();
@@ -103,7 +110,7 @@
       .attr('width', (d: RouteData) =>{
         return x(d.trips);
       })
-      .attr("fill", d => {
+      .attr("fill", (d: RouteData) => {
         let color;
         switch(railState.option){
           case '0':
