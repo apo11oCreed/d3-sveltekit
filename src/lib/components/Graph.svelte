@@ -1,11 +1,16 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import Select from '$lib/components/Select.svelte';
   import { SUBWAYCOLORS } from '$lib/js/constants';
   import { getContext } from 'svelte';
   import * as d3 from 'd3';
   import { railState } from '$lib/js/state.svelte.js';
   
-  const dataInput = getContext('data');
+  // load data when component is mounted
+  let dataInput;
+  onMount(() => {
+        dataInput = getContext('data');
+	});
 
   type RouteData = { id: string; trips: number };
   
