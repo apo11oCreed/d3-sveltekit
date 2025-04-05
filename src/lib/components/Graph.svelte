@@ -6,6 +6,8 @@
   import * as d3 from 'd3';
   import { railState } from '$lib/js/state.svelte.js';
   
+  type RouteData = { id: string; trips: number };
+  
   interface RailData {
     rails: {
       [key: string]: {
@@ -14,18 +16,16 @@
     };
   }
 
-  const dataInput = getContext<RailData>('data');
-  // load data when component is mounted
-  let dataInput;
-  onMount(() => {
-        dataInput = getContext('data');
-	});
-
-  type RouteData = { id: string; trips: number };
   
   let graphContainer, // INIT VAR TO HOLD THE GRAPH CONTAINER
   graphContainerWidth = $state<number>(0), // INIT VAR TO HOLD WIDTH OF THE GRAPH CONTAINER
-  graphContainerStyles;
+  graphContainerStyles,
+  dataInput;
+  
+  // load data when component is mounted
+  onMount(() => {
+        dataInput = getContext<RailData>('data');
+	});
   
   
   // If the route selection has been changed, run the route data request
