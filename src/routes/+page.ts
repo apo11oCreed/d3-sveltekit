@@ -1,6 +1,6 @@
 import { ApiConfig, TYPES } from "$lib"
 import "$lib/css/styles.styl"
-export const prerender = true
+export const prerender = false
 
 const types = TYPES;
 
