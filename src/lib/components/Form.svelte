@@ -12,6 +12,8 @@
     rails: Record<string, Rail>;
   };
 
+  console.log(graphData)
+
   let selectedRail = $state<string>('');
   // uncomment below if using the route selection
   // selectedRoute = $state<string>('');
